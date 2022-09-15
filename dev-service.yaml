@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dev
+spec:
+  volumes:
+    - name: es-local-storage
+      hostPath: 
+        path: /Volumes/workspace/ds/data/elasticsearch
+    - name: es-local-config
+      hostPath:
+        path: /Volumes/workspace/ds/config/elasticsearch/elasticsearch.yml
+        type: File
+  containers:
+    - name: "redis"
+      image: redis:latest
+      resources:
+        limits:
+          cpu: "250m"
+          memory: "500M"
+      ports:
+        - containerPort: 6379
+          hostPort: 6379
+    - name: es
+      image: es:6.7.2
+      resources: {}
+      ports:
+        - containerPort: 9200
+          hostPort: 9200
+        - containerPort: 9300
+          hostPort: 9300
+      env:
+        - name: ES_JAVA_OPTS
+          value:  "-Xmx1g -Xms1g"
+        - name: discovery.type
+          value: single-node
+      volumeMounts:
+        - name: es-local-storage
+          mountPath: /usr/share/elasticsearch/data
+        - name: es-local-config
+          mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+    - name: eshq
+      image: elastichq/elasticsearch-hq
+      resources: {}
+      ports:
+        - containerPort: 5000
+          hostPort: 9800
+    - name: zook1
+      image: zookeeper:latest
+      ports:
+        - containerPort: 2181
+          hostPort: 2181
+      resources: {}
+
+
+    
+      
+
+    
