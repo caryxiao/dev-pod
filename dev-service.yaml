@@ -7,6 +7,10 @@ spec:
     - name: es-local-storage
       hostPath: 
         path: /Volumes/workspace/ds/data/elasticsearch
+    - name: redis-local-storage
+      hostPath: 
+        path: /Volumes/workspace/ds/data/redis
+        type: Directory
     - name: es-local-config
       hostPath:
         path: /Volumes/workspace/ds/config/elasticsearch/elasticsearch.yml
@@ -21,6 +25,9 @@ spec:
       ports:
         - containerPort: 6379
           hostPort: 6379
+      volumeMounts:
+        - name: redis-local-storage
+          mountPath: /data
     - name: es
       image: es:6.7.2
       resources: {}
