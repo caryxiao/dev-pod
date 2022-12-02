@@ -15,7 +15,41 @@ spec:
       hostPath:
         path: /Volumes/workspace/ds/config/elasticsearch/elasticsearch.yml
         type: File
+    - name: wwwroot
+      hostPath:
+        path: /Volumes/workspace/wwwroot
+        type: Directory
+    - name: nginx-sites-enabled
+      hostPath:
+        path: /Volumes/workspace/ds/config/nginx/conf.d
+        type: Directory
   containers:
+    - name: "php73-fpm"
+      image: php-fpm:7.3.33
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "2G"
+      ports:
+        - containerPort: 9000
+          hostPort: 9073
+      volumeMounts:
+        - name: wwwroot
+          mountPath: /var/www/
+    - name: "nginx"
+      image: "nginx"
+      resources:
+        limits:
+          cpu: "500m"
+          memory: "1G"
+      ports:
+        - containerPort: 80
+          hostPort: 80
+      volumeMounts:
+        - name: wwwroot
+          mountPath: /var/www/
+        - name: nginx-sites-enabled
+          mountPath: /etc/nginx/conf.d
     - name: "redis"
       image: redis:latest
       resources:
@@ -30,7 +64,10 @@ spec:
           mountPath: /data
     - name: es
       image: es:6.7.2
-      resources: {}
+      resources: 
+        limits:
+          cpu: "500m"
+          memory: "2G"
       ports:
         - containerPort: 9200
           hostPort: 9200
@@ -48,7 +85,10 @@ spec:
           mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
     - name: eshq
       image: elastichq/elasticsearch-hq
-      resources: {}
+      resources:
+        limits:
+          cpu: "250m"
+          memory: "200M"
       ports:
         - containerPort: 5000
           hostPort: 9800
@@ -57,7 +97,10 @@ spec:
       ports:
         - containerPort: 2181
           hostPort: 2181
-      resources: {}
+      resources: 
+        limits:
+          cpu: "250m"
+          memory: "200M"
 
 
     
