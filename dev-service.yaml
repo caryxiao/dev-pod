@@ -23,12 +23,16 @@ spec:
       hostPath:
         path: /Volumes/workspace/ds/config/nginx/conf.d
         type: Directory
+    - name: php73-fpm-conf
+      hostPath:
+        path: /Volumes/workspace/ds/config/php73-fpm/php.ini
+        type: File   
   containers:
     - name: "php73-fpm"
       image: php-fpm:7.3.33
       resources:
         limits:
-          cpu: "500m"
+          cpu: "1000m"
           memory: "2G"
       ports:
         - containerPort: 9000
@@ -36,6 +40,8 @@ spec:
       volumeMounts:
         - name: wwwroot
           mountPath: /var/www/
+        - name: php73-fpm-conf
+          mountPath: /usr/local/etc/php/php.ini
     - name: "nginx"
       image: "nginx"
       resources:

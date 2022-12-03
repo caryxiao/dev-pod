@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dev-database
+  labels:
+    name: dev-database
+spec:
+  volumes:
+    - name: mysql-master-storage
+      hostPath: 
+        path: /Volumes/workspace/ds/data/mysql
+        type: Directory
+    - name: mysql-master-cnf
+      hostPath:
+        path: /Volumes/workspace/ds/config/mysql/my.cnf
+        type: File    
+  containers:
+  - name: mysql-5.7
+    image: mysql:5.7
+    env:
+      - name:  MYSQL_ROOT_PASSWORD
+        value: "123456"
+    securityContext:
+        runAsUser: 1000 
+        allowPrivilegeEscalation: false
+    resources:
+      limits:
+        memory: "256Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 3306
+        hostPort: 33061
+    volumeMounts:
+      - name:  mysql-master-storage
+        mountPath: /var/lib/mysql
+      - name: mysql-master-cnf
+        mountPath: /etc/my.cnf
