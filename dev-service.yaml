@@ -32,8 +32,8 @@ spec:
       image: php-fpm:7.3.33
       resources:
         limits:
-          cpu: "1000m"
-          memory: "2G"
+          cpu: "6000m"
+          memory: "5G"
       ports:
         - containerPort: 9000
           hostPort: 9073
@@ -60,8 +60,8 @@ spec:
       image: redis:latest
       resources:
         limits:
-          cpu: "250m"
-          memory: "500M"
+          cpu: "3000m"
+          memory: "1G"
       ports:
         - containerPort: 6379
           hostPort: 6379
@@ -72,7 +72,7 @@ spec:
       image: es:6.7.2
       resources: 
         limits:
-          cpu: "500m"
+          cpu: "2000m"
           memory: "2G"
       ports:
         - containerPort: 9200
@@ -93,8 +93,8 @@ spec:
       image: elastichq/elasticsearch-hq
       resources:
         limits:
-          cpu: "250m"
-          memory: "200M"
+          cpu: "2000m"
+          memory: "500M"
       ports:
         - containerPort: 5000
           hostPort: 9800
@@ -105,8 +105,8 @@ spec:
           hostPort: 2181
       resources: 
         limits:
-          cpu: "250m"
-          memory: "200M"
+          cpu: "2500m"
+          memory: "1G"
 
 
     
